@@ -5,7 +5,8 @@ import TextField from 'material-ui/TextField';
 import Common from "../shared/common";
 import IconButton from 'material-ui/IconButton';
 import Archicon from 'material-ui/svg-icons/content/archive';
-
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
  var styles={
   large: {
     width: 120,
@@ -34,7 +35,8 @@ class VerProyecto extends Component{
             creador: '',
             idproyecto: localStorage.getItem("idproyecto") ,
             archivoexist : false ,
-            
+            mipost: false ,
+            dialogborrar: false ,
         
         }
         this.handleChange = this.handleChange.bind(this);
@@ -46,7 +48,16 @@ class VerProyecto extends Component{
     componentWillMount(){
         const padre = this;
         const idproyecto = this.state.idproyecto ;
+        const usertemp = localStorage.getItem('user')
+        const usuario = JSON.parse(usertemp);
+        
         Common.buscarproyecto(idproyecto , resp => {
+            
+            if ( resp.data.data.owners[0].id == usuario.id ){
+                padre.setState({ mipost: true}) ;
+                console.log('si es mi post');
+            }
+            
             padre.setState({ nombreproyecto: resp.data.data.name , 
             descripcion: resp.data.data.description , 
             fecha: resp.data.data.created_at ,
@@ -118,12 +129,23 @@ class VerProyecto extends Component{
     
     borrarproyecto(){
         Common.borrarproyecto( this.state.idproyecto , resp => {
-            console.log(resp);
+              this.setState({dialogborrar:false});
+              this.props.history.push('/')
          }, error => {
-             console.log(error);
+             
          })
     }
     
+   handleClose () {
+    this.setState({
+      dialogborrar: false,
+    });
+  }
+    
+              handleOpen() {
+    this.setState({dialogborrar: true});
+  };
+  
     render() {
         return (
             
@@ -140,7 +162,15 @@ class VerProyecto extends Component{
                             <div className="card-body">
                                <label > <b>Descripcion:</b></label>
                                <br/>
-                                <TextField  value={this.state.descripcion} multiLine={true} rows={5} onChange={this.handleChange} name="descripcion" fullWidth={true}/>
+                               { this.state.mipost == false ?
+                                <TextField  value={this.state.descripcion} multiLine={true} rows={5} onChange={this.handleChange} name="descripcion" fullWidth={true}  
+                                disabled={true}
+                                />
+                                : null }
+                                { this.state.mipost == true ?
+                                 <TextField  value={this.state.descripcion} multiLine={true} rows={5} onChange={this.handleChange} name="descripcion" fullWidth={true}  
+                                />
+                                : null }
                                 <br/>
                             <label ><b> Codigo:</b> </label>
                             <TextField  value={this.state.codigo}  name="codigo"/>
@@ -152,16 +182,22 @@ class VerProyecto extends Component{
                             <label ><b> Fecha de Actualizacion:</b> </label>
                             <TextField  value={this.state.fechaactualizacion}  name="fechaactualizacion"/>
                             <br/>
+                            { this.state.mipost == true ?
+                            <div>
                             <label ><b> Subir Archivo .Zip:</b> </label>
                             <input type='file'  id="documentselector"  onChange={this.getFileName}/>
+                            </div>
+                            : null }
                             <br/>
                             <label ><b> Creador: </b></label>
                             <TextField  value={this.state.creador} />   
                             <br/>
+                            { this.state.mipost == true ?
                             <div className="text-center">
                             <button  className="btn btn-primary mr-3" onClick={ () => this.actualizarinfo ()}>Actualizar Informacion</button>
-                            <button  className="btn btn-primary mr-3"onClick={ () => this.borrarproyecto ()}  >Borrar Proyecto</button>
+                            <button  className="btn btn-primary mr-3"  onClick={() => this.handleOpen()}  >Borrar Proyecto</button>
                             </div>
+                        :null    }
                             </div>
                         </Card>
                     </div>
@@ -187,6 +223,28 @@ class VerProyecto extends Component{
 
                 </div>
              : null }   
+             
+             
+                        <Dialog
+          title="Borrar Formato"
+          
+          modal={true}
+          open={this.state.dialogborrar}
+        >
+               <h4> Esta Seguro que desea borrar el proyecto? </h4>
+        <FlatButton
+        label="Cancel"
+        primary={true}
+        onClick={()=> this.handleClose()}
+      />
+      <FlatButton
+        label="Aceptar"
+        primary={true}
+        onClick={ () => this.borrarproyecto ()} 
+      />    
+                
+        </Dialog>
+             
                 
             </div >
         </MuiThemeProvider>

@@ -36,6 +36,8 @@ class Perfil extends Component {
            perfil: '' ,
            correo : '' ,
            file: ' ' ,
+           fechaderegistro: '',
+           ultimaactualizacion: '',
         }
             this.handleChange = this.handleChange.bind(this);
             this.handleOpen = this.handleOpen.bind(this);
@@ -48,11 +50,19 @@ class Perfil extends Component {
     
     
     componentWillMount(){
-        
+        const padre = this ;
         const token  = localStorage.getItem('token');
         const user = localStorage.getItem('user')
         const usuario = JSON.parse(user);
-        this.setState( { nombre: usuario.name , correo: usuario.email , perfil: usuario.description  })
+        Common.buscarusuario(usuario.id , resp => {
+            console.log(resp);
+            padre.setState( { nombre: resp.data.data.name , correo: resp.data.data.email , perfil: resp.data.data.description ,
+            fechaderegistro: resp.data.data.created_at , ultimaactualizacion: resp.data.data.updated_at })
+        } , error =>{
+            console.log(error);
+        });
+        
+        
         }
           handleChange(e){
         
@@ -134,11 +144,22 @@ class Perfil extends Component {
                         <label htmlFor="exampleInputDescrp">Correo:</label>
                         <h6 >{this.state.correo} </h6>
                         </div>
-          
+                        
+                        <div className="form-group">
+                        <label htmlFor="exampleInputDescrp">Fecha de Registro:</label>
+                        <h6 >{this.state.fechaderegistro} </h6>
+                        </div>
+                        
+                        <div className="form-group">
+                        <label htmlFor="exampleInputDescrp">Ultima Actualizacion:</label>
+                        <h6 >{this.state.ultimaactualizacion} </h6>
+                        </div>
+                        
+          <form>
                         <div className="text-center">
                         <button  className="btn btn-primary mr-3" onClick={ () => this.guardarinfo ()}>Guardar</button>
                          </div>
-          
+          </form>
           
           </div>
           </div>

@@ -141,6 +141,20 @@ export default class Common {
                 onError(error)
             });
     }
+
+           static buscarusuario(id, onSuccess , onError) {
+            Axios({
+              method: 'get',
+              url: 'https://repo-code-uninorte.herokuapp.com/api/v1/users/'+id ,
+              headers: this.getHeader(),
+            }).then(response=>{
+                onSuccess(response);
+                return response;
+            }).catch(error=>{
+                onError(error)
+            });
+    }
+
     
         static newproject(name , description , tags , collaborators, onSuccess, onError) {
             console.log(this.getHeader());

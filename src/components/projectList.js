@@ -74,15 +74,15 @@ class ProjectList extends Component{
           this.setState({auth:false})  
         }
         
-        const tags = new Array("tag1", "tag2", "tag3") ;
+        
   
   
         if (usuario) {
             Common.listarmisproyectos( usuario.id , resp => { 
-                console.log(resp);
+                
                 padre.setState({ projectlist : resp.data.data})
             } , err => { 
-                console.log(err)
+                
                 
             })
         }
