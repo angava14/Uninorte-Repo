@@ -3,6 +3,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import Common from "../shared/common";
 import Chip from 'material-ui/Chip';
+import Navbar from "./navbar";
 
 class NewProject extends Component{
     
@@ -51,7 +52,9 @@ class NewProject extends Component{
     agregartag(){
         const tag = document.getElementById('tags').value;
         this.state.chipData.push({ label: tag})
-        this.setState({ contador: this.state.contador + 1});
+        this.setState({ contador: this.state.contador + 1 });
+           var s = document.getElementById('tags');
+            s.value = "";
     }
     componentWillMount(){
          const token = localStorage.getItem('token');
@@ -90,11 +93,11 @@ class NewProject extends Component{
         console.log(tags);
     
         Common.newproject (nombreproyecto , descripcion , tags , colaboradores , response => {
-            console.log(response);
+            
             Common.subirarchivo(archivo , response.data.data.id , resp => {
-                console.log(resp);
+                padre.props.history.push('/')
             } , error => {
-                
+                padre.props.history.push('/')
             } )
             
         } , erro => {
@@ -110,6 +113,7 @@ class NewProject extends Component{
         return (
             
             <MuiThemeProvider>
+            <Navbar history = {this.props.history}/>
                 <div className="container mt-5">
                 <div className="row justify-content-center">
                     <div className="col-lg-7 col-md-10">

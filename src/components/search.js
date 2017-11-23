@@ -12,6 +12,7 @@ import FontIcon from 'material-ui/FontIcon';
 import SvgIconFace from 'material-ui/svg-icons/action/face';
 import SvgIconFlag from 'material-ui/svg-icons/content/flag';
 import {blue300, indigo900} from 'material-ui/styles/colors';
+import Navbar from "./navbar";
 
 
 const styles = {
@@ -87,8 +88,10 @@ class Search extends Component{
         return (
             
             <MuiThemeProvider>
+            <Navbar history = {this.props.history}/>
                           <h1 style = {styles.card} >Resultados: </h1>
                               {this.state.projectlist.map((item , i , objeto )=>{
+                              console.log(item);
              return (
     	         <Card style = {styles.card} key={item.id}>
                     <CardHeader
@@ -101,7 +104,21 @@ class Search extends Component{
                     </CardText>
                     <CardText> Creado Por: {item.owners[0].name}
                     </CardText>
-                    <CardActions className="visibility"  >
+                    <CardActions   >
+                                      <h6>Tags : </h6> {item.tags.map(( x , i , objeto )=>{ 
+                  return(
+                 
+                          <Chip
+                             key={x.tag}
+                            style={styles.chip}
+                                  >
+                             {x.tag}
+                            </Chip>
+                            
+                    );
+                   })} 
+                   
+                   
                    
                     </CardActions>
                 </Card>

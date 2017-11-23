@@ -7,6 +7,9 @@ import IconButton from 'material-ui/IconButton';
 import Archicon from 'material-ui/svg-icons/content/archive';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import Navbar from "./navbar";
+import Chip from 'material-ui/Chip';
+
  var styles={
   large: {
     width: 120,
@@ -115,7 +118,7 @@ class VerProyecto extends Component{
         }
         
         Common.actualizarinfoprojecto(this.state.idproyecto,nombreproyeto , descripcion , tags , colaboradores , resp => {
-            console.log(resp);
+            window.location.reload();
         }, error => {
             console.log(error);
         })
@@ -150,6 +153,7 @@ class VerProyecto extends Component{
         return (
             
             <MuiThemeProvider>
+            <Navbar history = {this.props.history}/>
                 <div className="container mt-5">
                 <div className="row justify-content-center">
                     <div className="col-lg-7 col-md-10">

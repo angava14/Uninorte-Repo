@@ -3,7 +3,7 @@ import Login from './components/login'
 import Register from './components/register'
 import NewProject from './components/newProject'
 import Dashboard from './components/dashboard'
-import Navbar from "./components/navbar";
+import Usuarios from "./components/usuarios";
 import Perfil from "./components/perfil";
 import PL from "./components/projectList";
 import Search from "./components/search";
@@ -17,7 +17,7 @@ class App extends Component {
       <Router>
         <div >
 
-          <Navbar history = {this.props.history} />
+          
           <Route exact path='/' component={PL} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Register} />
@@ -25,6 +25,7 @@ class App extends Component {
           <Route path="/perfil" component={Perfil} />
           <Route path="/verproyecto" component={VerProyecto} />
           <Route path="/search" component={Search} />
+          <Route path="/usuarios" component={Usuarios} />
         </div>
       </Router>
     );

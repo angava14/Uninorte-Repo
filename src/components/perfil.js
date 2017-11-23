@@ -6,6 +6,7 @@ import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton' ;
 import Common from "../shared/common";
+import Navbar from "./navbar";
 
 const card ={
 	display:'flex',
@@ -54,6 +55,7 @@ class Perfil extends Component {
         const token  = localStorage.getItem('token');
         const user = localStorage.getItem('user')
         const usuario = JSON.parse(user);
+        if (token){
         Common.buscarusuario(usuario.id , resp => {
             console.log(resp);
             padre.setState( { nombre: resp.data.data.name , correo: resp.data.data.email , perfil: resp.data.data.description ,
@@ -62,6 +64,9 @@ class Perfil extends Component {
             console.log(error);
         });
         
+        }else{
+            this.props.history.push('/login')
+        }
         
         }
           handleChange(e){
@@ -101,10 +106,10 @@ class Perfil extends Component {
         const nombre  = this.state.nombre ; 
         const perfil = this.state.perfil ; 
         const correo = usuario.email ;
-        console.log(correo);
+        
         /* Con esas 2 variables ya tienes lo que esta en el input de nombre y en el input de perfil*/
         Common.actualizarinfoperfil(usuario.id , nombre , correo , perfil , resp =>{
-            console.log(resp);
+            window.location.reload()
         } , error => {
             console.log(error);
         });
@@ -114,8 +119,12 @@ class Perfil extends Component {
 
     render() {
         return (
+            <div>
+            <Navbar history = {this.props.history}/>
             <div style={carta}>
+            
            <MuiThemeProvider>
+           
            <div>
            		<Card  >
 		<CardTitle style={card} titleStyle={card}  title="Mi Perfil"  />
@@ -183,6 +192,7 @@ class Perfil extends Component {
            
            </div>
            </MuiThemeProvider>
+            </div>
             </div>
         );
     }

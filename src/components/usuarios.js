@@ -24,8 +24,6 @@ const styles = {
    aligning: {
      display: 'inline-block',
   },chip: {
-      display: 'flex',
-      flexDirection: 'row' ,
     margin: 2,
   },
   wrapper: {
@@ -42,7 +40,7 @@ const styles = {
     alert('You clicked the delete button.');
     }
 
-class ProjectList extends Component{
+class Usuarios extends Component{
     
     
     constructor(props) {
@@ -51,8 +49,7 @@ class ProjectList extends Component{
             admin : '' ,
             user: '' ,
             auth: false, 
-            projectlist : [] ,
-            
+            usuarioslist : [] ,
         }
     } 
     
@@ -78,26 +75,18 @@ class ProjectList extends Component{
         }
         
         
-  
-  
-        if (usuario) {
-            Common.listarmisproyectos( usuario.id , resp => { 
-                
-                padre.setState({ projectlist : resp.data.data})
-            } , err => { 
-                
-                
-            })
-        }
-        
+ 
+        Common.getusers( resp => {
+            console.log(resp);
+        } , error => {
+            console.log(error);
+        })
         
         
     }
     
-    verproyecto(id){
-    localStorage.setItem("idproyecto" ,id)
-    this.props.history.push({pathname: '/verproyecto'})    
-    }
+  
+
     
     
     render() {
@@ -105,38 +94,8 @@ class ProjectList extends Component{
             
             <MuiThemeProvider>
             <Navbar history={this.props.history} />
-                           <h1 style = {styles.card} >Mis Proyectos</h1>
-                              {this.state.projectlist.map((item , i , objeto )=>{
-                              
-             return (
-    	         <Card style = {styles.card} key={item.id}>
-                    <CardHeader
-                              onClick= { () => this.verproyecto(item.id) }
-                              title={item.name}
-                              subtitle={"Fecha de Creacion :" + item.created_at}
-                              style={{ cursor: 'pointer'}}
-                    />
-                    <CardText>{item.description}
-                    </CardText>
-
-                    <CardActions  >
-                   <h6>Tags : </h6> {item.tags.map(( x , i , objeto )=>{ 
-                  return(
-                 
-                          <Chip
-                             key={x.tag}
-                            style={styles.chip}
-                                  >
-                             {x.tag}
-                            </Chip>
-                            
-                    );
-                   })} 
-                    </CardActions>
-
-                </Card>
-                );
-                              })}      
+                           <h1 style = {styles.card} >Usuarios:</h1>
+     
     	      
         </MuiThemeProvider>
             );
@@ -149,4 +108,4 @@ class ProjectList extends Component{
     
     
 }
-export default ProjectList;
+export default Usuarios;

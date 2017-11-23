@@ -17,6 +17,7 @@ class Navbar extends Component {
    
     
     componentWillMount(){
+        
         const usertemp = localStorage.getItem('user')
         const usuario = JSON.parse(usertemp);
         const token = localStorage.getItem('token');
@@ -39,6 +40,8 @@ class Navbar extends Component {
     
     logout(){
         localStorage.clear();
+        this.props.history.push('/login')
+        this.forceUpdate()
         
     }
     
@@ -82,13 +85,18 @@ class Navbar extends Component {
                         
 
                         { this.state.admin == true ?
+                        <div className="navbar-nav mr-auto" >
                            <li className="nav-item">
                              <a className="nav-link" ><Link to="/signup">Registrar</Link></a>
                         </li>
+                        <li className="nav-item">
+                             <a className="nav-link" ><Link to="/usuarios">Usuarios</Link></a>
+                        </li>
+                        </div> 
                             : null
                         }
                                                 <li className="nav-item">
-                             <a className="nav-link"  onClick={this.logout}><Link to="/">Logout</Link></a>
+                             <a className="nav-link"  onClick={ () =>this.logout()}><Link to="/">Logout</Link></a>
                         </li>
                         
                         </ul>

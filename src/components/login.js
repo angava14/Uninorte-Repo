@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Common from "../shared/common";
-
+import Navbar from "./navbar";
 
 class Login extends Component {
     constructor(props) {
@@ -28,6 +28,8 @@ class Login extends Component {
     }
     render() {
         return (
+          <div>
+            <Navbar history = {this.props.history}/>
             <div className="container mt-5">
                 <div className="row justify-content-center">
                     <div className="col-lg-7 col-md-10">
@@ -58,6 +60,7 @@ class Login extends Component {
 
                 </div>
             </div >
+            </div>
         );
     }
 }

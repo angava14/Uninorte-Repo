@@ -253,6 +253,23 @@ export default class Common {
             });
     }  
     
+         static getusers(files, projectid, onSuccess, onError) {
+
+            Axios({
+              method: 'get',
+              url: 'https://repo-code-uninorte.herokuapp.com/api/v1/users' , 
+              params: {
+                  page : 1 ,
+              } ,
+              headers: this.getHeader(),
+            }).then(response=>{
+                
+                onSuccess(response);
+                return response;
+            }).catch(error=>{
+                
+            });
+    }    
     
             static listar(onSuccess , onError) {
         Axios.get(urls.getAllUsers,{
